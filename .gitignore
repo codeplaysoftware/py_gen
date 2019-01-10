@@ -1,0 +1,6 @@
+*.pyc
+
+# Files generated during testing
+testing/testFileGenerate.txt
+testing/testFileOut.txt
+testing/testFormattedFileGenerate.txt
