@@ -17,6 +17,7 @@
 
 import unittest
 import os
+import sys
 from ..internal.funcs import (get_space_count, add_spaces_to_lines,
                               read_from_file, insert_in_source, write_to_file,
                               clang_format)
@@ -76,16 +77,22 @@ class TestFuncs(unittest.TestCase):
         with open(file_name, 'r') as input_file:
             self.assertEqual(test_text, input_file.read())
 
+    @unittest.skipIf(
+        sys.platform.startswith("win"),
+        "formatting tests are disabled on Windows")
     def test_clang_format(self):
         # Generate clean test file
         file_name = TEST_DIR + '/testClangFormat.cpp'
+        unformatted_input = (' int  main()   { return 0 ; }')
         with open(file_name, 'w') as output_file:
-            output_file.write(' int main() { return 0 ; }')
+            output_file.write(unformatted_input)
         # Perform the test
-        test_text = 'int main() { return 0; }'
+        # Note: We do not test for an exact input, as different clang format
+        # versions and configurations could exist for different users. The best
+        # we can do is test 'some' formatting happened.
         clang_format(file_name, TEST_DIR + '/execute_clang_format.sh')
         with open(file_name, 'r') as input_file:
-            self.assertEqual(test_text, input_file.read())
+            self.assertNotEqual(unformatted_input, input_file.read())
 
 
 def run_func_tests():

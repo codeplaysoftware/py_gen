@@ -391,4 +391,5 @@ OK
 
 The test suite covers every `Itermode`, interface function, internal function,
 and file reading/writing. If clang-format is not available with which to perform
-formatting tests, some failures will be seen.
+formatting tests, two failures will be seen. As no formatting script is present
+for Windows, these two formatting tests are skipped on Windows.
