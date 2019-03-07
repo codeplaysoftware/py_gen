@@ -1,13 +1,27 @@
+#   Copyright (C) Codeplay Software Limited.
 #
-#    Copyright (C) Codeplay Software Limited. All Rights Reserved.
+#   Licensed under the Apache License, Version 2.0 (the "License");
+#   you may not use these files except in compliance with the License.
+#   You may obtain a copy of the License at
 #
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#   For your convenience, a copy of the License has been included in this
+#   repository.
+#
+#   Unless required by applicable law or agreed to in writing, software
+#   distributed under the License is distributed on an "AS IS" BASIS,
+#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#   See the License for the specific language governing permissions and
+#   limitations under the License.
+
 import unittest
 from string import Template
 import os
 from ..interface import generate_source, generate_file
 from ..iter_classes import Itermode, Iterable, IterGroup, RemovalIterGroup
 
-test_dir = os.path.dirname(os.path.abspath(__file__))
+TEST_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
 class TestInterface(unittest.TestCase):
@@ -17,22 +31,18 @@ class TestInterface(unittest.TestCase):
     def test_generate_source(self):
         source = 'Line one\n  @ip1@\n    @ip2@\nEnding line'
         iter_groups = [
-            IterGroup('@ip1@',
-                      Template('a ${key0}\n  ${key1}\nb'), [
-                          Iterable('key0', ['a', 'b', 'c'],
-                                   Itermode.combinations, 2),
-                          Iterable('key1', ['d', 'e'], Itermode.combinationsWR,
-                                   3)
-                      ]),
-            IterGroup('@ip2@',
-                      Template('    1 ${key2}${key3}\n'), [
-                          Iterable('key2', ['1 2', '3'], Itermode.permutations,
-                                   2),
-                          Iterable('key3', ['xyzw'], Itermode.product, 3)
-                      ])
+            IterGroup('@ip1@', Template('a ${key0}\n  ${key1}\nb'), [
+                Iterable('key0', ['a', 'b', 'c'], Itermode.combinations, 2),
+                Iterable('key1', ['d', 'e'], Itermode.combinationsWR, 3)
+            ]),
+            IterGroup('@ip2@', Template('    1 ${key2}${key3}\n'), [
+                Iterable('key2', ['1 2', '3'], Itermode.permutations, 2),
+                Iterable('key3', ['xyzw'], Itermode.product, 3)
+            ])
         ]
         returned_str = generate_source(source, iter_groups)
-        self.assertEqual('Line one\n  a ab\n    ddd\n  ba ac\n    ddd\n  ba bc\
+        self.assertEqual(
+            'Line one\n  a ab\n    ddd\n  ba ac\n    ddd\n  ba bc\
 \n    ddd\n  ba ab\n    dde\n  ba ac\n    dde\n  ba bc\n    dde\n  ba ab\n    d\
 ee\n  ba ac\n    dee\n  ba bc\n    dee\n  ba ab\n    eee\n  ba ac\n    eee\n  \
 ba bc\n    eee\n  b\n        1 1 23xyzwxyzwxyzw\n        1 31 2xyzwxyzwxyzw\n\n\
@@ -57,17 +67,14 @@ Ending line', returned_str)
     def test_generate_source_removal_iter(self):
         source = '@ip1@'
         iter_groups = [
-            RemovalIterGroup(
-                '@ip1@',
-                Template('${key0}  ${key1}  |\n'), [
-                    Iterable('key0', ['a', 'b', 'c'], Itermode.combinations, 2,
-                             True),
-                    Iterable('key1', ['3', '2', '1'], Itermode.combinations, 2)
-                ], [
-                    Iterable('key0', ['a', 'b'], Itermode.combinations, 2,
-                             True),
-                    Iterable('key1', ['3', '2'], Itermode.combinations, 2)
-                ])
+            RemovalIterGroup('@ip1@', Template('${key0}  ${key1}  |\n'), [
+                Iterable('key0', ['a', 'b', 'c'], Itermode.combinations, 2,
+                         True),
+                Iterable('key1', ['3', '2', '1'], Itermode.combinations, 2)
+            ], [
+                Iterable('key0', ['a', 'b'], Itermode.combinations, 2, True),
+                Iterable('key1', ['3', '2'], Itermode.combinations, 2)
+            ])
         ]
         returned_str = generate_source(source, iter_groups)
         self.assertEqual(
@@ -95,19 +102,15 @@ Ending line', returned_str)
 
     def test_generate_file(self):
         # Test variables
-        file_name = test_dir + '/testFileGenerate.txt'
+        file_name = TEST_DIR + '/testFileGenerate.txt'
         iter_groups = [
-            IterGroup('@ip1@',
-                      Template('a ${key0} c ${key1} e\n'), [
-                          Iterable('key0', ['a', 'b', 'c'],
-                                   Itermode.combinations, 2),
-                          Iterable('key1', ['a', 'b'], Itermode.product, 2)
-                      ]),
-            IterGroup('@ip2@',
-                      Template('1 ${key0} 2\n'), [
-                          Iterable('key0', ['1', '2', '3'],
-                                   Itermode.combinationsWR, 3)
-                      ])
+            IterGroup('@ip1@', Template('a ${key0} c ${key1} e\n'), [
+                Iterable('key0', ['a', 'b', 'c'], Itermode.combinations, 2),
+                Iterable('key1', ['a', 'b'], Itermode.product, 2)
+            ]),
+            IterGroup('@ip2@', Template('1 ${key0} 2\n'), [
+                Iterable('key0', ['1', '2', '3'], Itermode.combinationsWR, 3)
+            ])
         ]
         # Clean the test file first
         with open(file_name + '.in', 'w') as output_file:
@@ -124,7 +127,7 @@ a bc c ba e\n  a ab c bb e\n  a ac c bb e\n  a bc c bb e\n\n    1 111 2\n    1 \
 
     def test_generate_formatted_file(self):
         # Test variables
-        file_name = test_dir + '/testFormattedFileGenerate.txt'
+        file_name = TEST_DIR + '/testFormattedFileGenerate.txt'
         iter_group = [
             IterGroup(
                 '@ip1@',
@@ -143,7 +146,7 @@ a bc c ba e\n  a ab c bb e\n  a ac c bb e\n  a bc c bb e\n\n    1 111 2\n    1 \
             file_name,
             iter_group,
             format_generated=True,
-            format_script=test_dir + '/execute_clang_format.sh')
+            format_script=TEST_DIR + '/execute_clang_format.sh')
         with open(file_name, 'r') as input_file:
             self.assertEqual(
                 'int main() {\n  int a = 0;\n  int b = 0;\n  int c\

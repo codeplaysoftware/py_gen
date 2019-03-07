@@ -1,4 +1,19 @@
-Copyright (C) Codeplay Software Limited. All Rights Reserved.
+Copyright (C) Codeplay Software Limited.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use these files except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+For your convenience, a copy of the License has been included in this
+repository.
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
 
 # Python Generator Tools (py_gen)
 
@@ -321,3 +336,59 @@ The insertion methods will add spacing to each generated line to keep the
 inserted string at equal indentation to the replaced insertion point. The output
 file (`file_name`) won't be written to until all of the generation has taken
 place. If generation fails part way through, no output will be produced.
+
+## Testing
+
+The py_gen module should be tested by importing the module and running the
+testing methods. Testing has been run on both python 2.7 and 3.5+. An output
+similar to the following should be seen when testing.
+
+```
+>>> import py_gen
+>>> py_gen.run_all_tests()
+......
+----------------------------------------------------------------------
+Ran 6 tests in 0.012s
+
+OK
+......
+----------------------------------------------------------------------
+Ran 6 tests in 0.006s
+
+OK
+.....
+----------------------------------------------------------------------
+Ran 5 tests in 0.000s
+
+OK
+.....
+----------------------------------------------------------------------
+Ran 5 tests in 0.000s
+
+OK
+.....
+----------------------------------------------------------------------
+Ran 5 tests in 0.000s
+
+OK
+.....
+----------------------------------------------------------------------
+Ran 5 tests in 0.000s
+
+OK
+.............
+----------------------------------------------------------------------
+Ran 13 tests in 0.001s
+
+OK
+.......
+----------------------------------------------------------------------
+Ran 7 tests in 0.001s
+
+OK
+
+```
+
+The test suite covers every `Itermode`, interface function, internal function,
+and file reading/writing. If clang-format is not available with which to perform
+formatting tests, some failures will be seen.

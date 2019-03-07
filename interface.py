@@ -1,10 +1,25 @@
+#   Copyright (C) Codeplay Software Limited.
 #
-#    Copyright (C) Codeplay Software Limited. All Rights Reserved.
+#   Licensed under the Apache License, Version 2.0 (the "License");
+#   you may not use these files except in compliance with the License.
+#   You may obtain a copy of the License at
 #
-from py_gen.internal.funcs import (read_from_file, insert_in_source, write_to_file,
-                           clang_format)
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#   For your convenience, a copy of the License has been included in this
+#   repository.
+#
+#   Unless required by applicable law or agreed to in writing, software
+#   distributed under the License is distributed on an "AS IS" BASIS,
+#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#   See the License for the specific language governing permissions and
+#   limitations under the License.
+
+from py_gen.internal.funcs import (read_from_file, insert_in_source,
+                                   write_to_file, clang_format)
 from py_gen.internal.iters import (dispatch_iterations, combined_dispatcher,
-                           removal_dispatcher, combined_removal_dispatcher)
+                                   removal_dispatcher,
+                                   combined_removal_dispatcher)
 from py_gen.iter_classes import IterGroup, RemovalIterGroup
 
 
